@@ -3,7 +3,7 @@
 import "./HeroSection.css";
 import React, { useEffect, useState } from "react";
 import slider from "../../../../assets/images/slider2.webp";
-import slider2 from "../../../../assets/images/categories.webp";
+import slider2 from "../../../../assets/images/categories.png";
 import slider3 from "../../../../assets/images/flash8.png";
 import slider4 from "../../../../assets/images/explore.png";
 import slider5 from "../../../../assets/images/explore2.png";
