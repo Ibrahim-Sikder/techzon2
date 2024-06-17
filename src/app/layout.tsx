@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-scroll="0">
-    <Providers>
+    <Providers >
       <body>
         <Toaster position="bottom-right" richColors />
         <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
