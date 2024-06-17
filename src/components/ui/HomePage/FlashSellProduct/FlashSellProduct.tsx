@@ -5,7 +5,6 @@ import {
   HiOutlineArrowNarrowRight,
   HiOutlineEye,
   HiOutlineHeart,
-  HiOutlineStar,
   HiStar,
 } from "react-icons/hi";
 import Link from "next/link";
@@ -45,7 +44,7 @@ const FlashSellProduct = () => {
   return (
     <Container className="sectionMargin">
       <div className="flex items-center mb-10 flex-wrap">
-        <FlashSaleTime />
+        {/* <FlashSaleTime /> */}
         <Link href="/flash-sale">
           <div className="flex items-center ml-0 lg:ml-8 bg-[#E8E8E8] px-3 py-2 rounded-sm mt-3">
             <button>See All</button> <HiOutlineArrowNarrowRight size={20} />
@@ -53,7 +52,7 @@ const FlashSellProduct = () => {
         </Link>
       </div>
       <div className="lg:grid-cols-3 md:grid-cols-2 grid-cols-1 grid xl:grid-cols-4 gap-10 place-content-center place-items-center">
-        {flashData?.map((data) => (
+        {flashData.map((data) => (
           <div key={data.id} className="flashSellProductWrap">
             <div className="flashContent">
               <span className="bg-[#F14705] text-white rounded-full p-1 text-sm mt-3">
