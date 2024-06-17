@@ -33,7 +33,7 @@ const CreateCity = () => {
       }}
     >
       <Typography fontWeight="bold" variant="h5" textAlign="center">
-      Jodi Editor
+        Jodi Editor
       </Typography>
       <TECForm onSubmit={submitHandler}>
         <Grid
@@ -46,6 +46,7 @@ const CreateCity = () => {
               ref={editor}
               value={content}
               config={joditConfig}
+              // Ensure onBlur and onChange do not interfere with SpeechRecognition
               onBlur={(newContent: string) => setContent(newContent)}
               onChange={(newContent: string) => setContent(newContent)}
             />
