@@ -5,6 +5,7 @@ import { useGetAllUsersQuery } from "@/redux/api/userApi";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
+import CreateProductModal from "./_components/CreateProductModal";
 
 
 const columns: GridColDef[] = [
@@ -65,7 +66,7 @@ const Users = () => {
           <TextField size="small" label="Search Product " variant="outlined" />
         </Stack>
 
-        {/* <UserCreateModal open={isModalOpen} setOpen={handleClose} /> */}
+        <CreateProductModal open={isModalOpen} setOpen={handleClose} />
 
         {isLoading ? (
           <p>Loading...</p>
