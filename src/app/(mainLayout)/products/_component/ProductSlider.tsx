@@ -5,7 +5,7 @@ import "keen-slider/keen-slider.min.css";
 import Image from "next/image";
 
 import React, { MutableRefObject } from "react";
-import "./SinglePageSlider.css";
+import "./ProductSlider.css";
 import {
   useKeenSlider,
   KeenSliderPlugin,

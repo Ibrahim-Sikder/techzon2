@@ -22,7 +22,7 @@ const SideBarItems = ({ item, index }: IProps) => {
         sx={{
           transition: "background 0.3s, border-right 0.3s",
           ...(pathName === linkPath
-            ? { borderRight: "3px solid #0891B2", background: "#059669" }
+            ? { borderRight: "3px solid #0891B2", background: "#2251CF" }
             : {}),
         }}
         disablePadding

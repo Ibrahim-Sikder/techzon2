@@ -33,11 +33,11 @@ const SideBar = () => {
             fontWeight="bold"
             sx={{ color: "primary.main", cursor: "pointer" }}
           >
-            Indiano Travel
+            Techzon
           </Typography>
         </Stack>
         <List>
-          {drawerItems("super_admin" as userRole).map((item, index) => (
+          {drawerItems("admin" as userRole).map((item, index) => (
             <SideBarItems key={index} item={item} index={index} />
           ))}
         </List>

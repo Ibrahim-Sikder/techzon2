@@ -98,7 +98,7 @@ const TECFileUploader = ({ name }: INTFileUploaderProps) => {
                     padding: "10px 15px",
                     border: "none",
                     borderRadius: "5px",
-                    background: "#059065",
+                    background: "#2251CF",
                     color: "#fff",
                     cursor: "pointer",
                   }}

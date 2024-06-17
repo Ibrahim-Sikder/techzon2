@@ -24,7 +24,7 @@ type TModalProps = {
   sx?: SxProps;
 };
 
-export default function INTModal({
+export default function TECModal({
   open = false,
   setOpen,
   title = "",

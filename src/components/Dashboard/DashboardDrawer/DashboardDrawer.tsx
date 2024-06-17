@@ -80,7 +80,7 @@ export default function DashboardDrawer({
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
-          background: "#0891b2",
+          background: "#2251CF",
           color: "#fff",
           boxShadow: 0,
           borderBottom: "1px solid #ddd",
@@ -115,7 +115,7 @@ export default function DashboardDrawer({
                 Hi, Ibrahim Sikder,
               </Typography>
               <Typography variant="h6" noWrap component="h4" fontWeight="bold">
-                Welcome to Indiano Travel!
+                Welcome to Techzon !
               </Typography>
             </Box>
             <Box

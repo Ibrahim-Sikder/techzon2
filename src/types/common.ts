@@ -37,8 +37,8 @@ export type IGenericErrorMessage = {
   message: string;
 };
 
-
-
+export const Gender = ["male", "female", "others"];
+export const Role = ["admin", "editor", "manager"];
 export const role = [
   "As BUSINESS OWNER",
   "AS A INVESTOR",
