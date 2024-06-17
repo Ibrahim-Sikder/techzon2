@@ -9,6 +9,7 @@ const Home = () => {
     <>
       <HeroSection />
       <FlashSellProduct />
+      
       <PopularCategories />
       <Categories/>
       <TopRatedProduct/>
