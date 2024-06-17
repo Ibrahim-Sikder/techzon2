@@ -1,0 +1,58 @@
+.orderItems {
+	display: flex;
+	align-items: center;
+	border: 1px solid #ddd;
+	width: 230px;
+	height: 50px;
+	padding-left: 20px;
+	transition: all .5s cubic-bezier(0.42, 0.42, 0.6, 0.58);
+}
+.orderItems:hover {
+	background: #2251CF;
+	color: #fff;
+}
+
+.profileWrap {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	margin-top: 30px;
+}
+.active {
+	background: #2251CF !important;
+	z-index: 2 !important;
+	color: #fff !important;
+	position: relative;
+	width: 230px;
+	height: 50px;
+	display: block;
+}
+.active:first-child {
+	background: transparent !important;
+	color: black !important;
+}
+
+.dashboardItems li {
+	display: flex;
+	align-items: center;
+	margin: 10px 0;
+}
+
+@media only screen and (max-width: 1024px) {
+	.sidebarWrap {
+		flex-wrap: wrap;
+		display: flex;
+		justify-content: center;
+	}
+}
+
+@media only screen and (max-width: 1024px) {
+	.orderItems {
+		width: 130px;
+		height: 35px;
+		padding-left: 0px;
+		margin: 5px;
+		padding-left: 10px;
+		font-size: 12px;
+	}
+}

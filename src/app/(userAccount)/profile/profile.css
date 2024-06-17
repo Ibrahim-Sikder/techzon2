@@ -1,0 +1,29 @@
+.accountInput, .accountInput2 {
+	width: 450px ;
+	margin-right: 10px ;
+	margin-top: 10px ;
+	border:1px solid #ddd;
+	height:55px;
+	padding:10px;
+	border-radius: 10px;
+}
+.accountInput2 {
+	width: 910px;
+	margin-top: 10px;
+}
+.accountInput input , .accountInput2 input:focus{
+	outline: none;
+}
+.accountBtn {
+	width: 200px;
+	height: 50px;
+}
+
+@media only screen and (max-width: 768px) {
+	.accountInput2,
+	.accountInput {
+		width: 100%;
+	}
+
+
+}
