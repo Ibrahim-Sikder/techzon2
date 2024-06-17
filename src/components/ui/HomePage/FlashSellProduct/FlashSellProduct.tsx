@@ -1,6 +1,5 @@
 import "./FlashSellProduct.css";
 import Image from "next/image";
-
 import {
   HiMinus,
   HiOutlineArrowNarrowRight,
@@ -14,46 +13,48 @@ import Container from "@/components/shared/Container";
 import FlashSaleTime from "./FlashSaleTime";
 import TopRatedIcons from "./TopRatedIcon";
 import flash from "../../../../assets/images/trending5.png";
-const FlashSellProduct = async () => {
+
+const FlashSellProduct = () => {
   const flashData = [
     {
       id: 1,
-      name: "Falsh",
+      name: "Flash",
       img: flash,
-      discount: '30%'
+      discount: "30%",
     },
     {
-      id: 1,
-      name: "Falsh",
+      id: 2,
+      name: "Flash",
       img: flash,
-       discount: '30%'
+      discount: "30%",
     },
     {
-      id: 1,
-      name: "Falsh",
+      id: 3,
+      name: "Flash",
       img: flash,
-       discount: '30%'
+      discount: "30%",
     },
     {
-      id: 1,
-      name: "Falsh",
+      id: 4,
+      name: "Flash",
       img: flash,
-       discount: '30%'
+      discount: "30%",
     },
   ];
+
   return (
     <Container className="sectionMargin">
-      <div className="flex items-center mb-10 flex-wrap ">
+      <div className="flex items-center mb-10 flex-wrap">
         <FlashSaleTime />
         <Link href="/flash-sale">
-          <div className="flex items-center ml-0  lg:ml-8 bg-[#E8E8E8]  px-3 py-2 rounded-sm mt-3 ">
+          <div className="flex items-center ml-0 lg:ml-8 bg-[#E8E8E8] px-3 py-2 rounded-sm mt-3">
             <button>See All</button> <HiOutlineArrowNarrowRight size={20} />
           </div>
         </Link>
       </div>
       <div className="lg:grid-cols-3 md:grid-cols-2 grid-cols-1 grid xl:grid-cols-4 gap-10 place-content-center place-items-center">
-        {flashData?.map((data: any) => (
-          <div key={data._id} className="flashSellProductWrap">
+        {flashData?.map((data) => (
+          <div key={data.id} className="flashSellProductWrap">
             <div className="flashContent">
               <span className="bg-[#F14705] text-white rounded-full p-1 text-sm mt-3">
                 {data.discount}
@@ -62,8 +63,7 @@ const FlashSellProduct = async () => {
               <div>
                 <p className="flashCartName">{data.name}</p>
                 <Link href="/flash-sale">
-                  {" "}
-                  <button className="flashCartBtn ">Add To Cart</button>
+                  <button className="flashCartBtn">Add To Cart</button>
                 </Link>
                 <div className="flex items-center">
                   <HiStar size={25} className="startIcon" />
