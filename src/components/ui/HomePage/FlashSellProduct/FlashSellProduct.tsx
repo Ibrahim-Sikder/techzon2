@@ -10,7 +10,6 @@ import {
   HiStar,
 } from "react-icons/hi";
 import Link from "next/link";
-import { TFlashSale } from "@/types";
 import Container from "@/components/shared/Container";
 import FlashSaleTime from "./FlashSaleTime";
 import TopRatedIcons from "./TopRatedIcon";

@@ -1,0 +1,83 @@
+.checkoutLeftSide,
+.checkoutRightSide {
+	width: 50%;
+}
+.checkoutInputField , .checkoutInputField2, .checkoutLeftSide select{
+	width: 50%;
+	margin-right: 5px;
+	border:1px solid #ddd;
+	padding:10px;
+	height:50px;
+	border-radius: 10px;
+}
+.checkoutLeftSide textarea{
+	border: 1px solid #ddd;
+	padding: 10px;
+	resize: none;
+	border-radius: 10px;
+}
+.checkoutInputField:focus, .checkoutInputField2:focus, .checkoutLeftSide select, .checkoutLeftSide textarea{
+	outline: none;
+}
+.checkoutInputField2, .checkoutLeftSide select {
+	width: 100%;
+	border:1px solid #ddd;
+}
+.otherNote {
+	height: 200px;
+	border-radius: 5px;
+	border: 1px solid #ddd;
+	width: 100%;
+}
+.yourOrder {
+	width: 100%;
+	border-radius: 5px;
+	border: 1px solid #ddd;
+	padding: 20px;
+	margin-left: 20px;
+	margin-top: 60px;
+}
+.yourOrder span {
+	margin-bottom: 10px;
+}
+.cashOnDelivery {
+	padding: 5px;
+	width: 100%;
+	border-radius: 5px;
+	border: 1px solid #ddd;
+	margin-left: 20px;
+	margin-top: 10px;
+}
+.sslComerz {
+	background: #255bab;
+	padding: 5px;
+	color: #fff;
+	border-radius: 5px;
+	font-size: 14px;
+}
+.placeOrderBtn {
+	width: 150px;
+	margin-top: 20px;
+}
+
+
+
+@media only screen and (max-width: 1024px) {
+	.checkoutLeftSide {
+		margin-right: 20px;
+	}
+	.yourOrder,
+	.cashOnDelivery {
+		margin-left: 0px;
+	}
+}
+@media only screen and (max-width: 1024px) {
+	.checkoutLeftSide,
+	.checkoutRightSide {
+		width: 100%;
+	}
+	.yourOrder {
+		font-size: 13px;
+		margin-top: 10px;
+	}
+}
