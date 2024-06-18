@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Autocomplete, Box, Button, Grid, Typography } from "@mui/material";
 import { FieldValues } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,11 +10,22 @@ import TECForm from "@/components/Forms/Form";
 import TECModal from "@/components/shared/TECModal/TECModal";
 import TECInput from "@/components/Forms/Input";
 import TECSelect from "@/components/Forms/Select";
-import { Gender } from "@/types";
+import {
+  Gender,
+  color,
+  productBrands,
+  productCategories,
+  productSizes,
+  productTags,
+} from "@/types";
 import TECTextArea from "@/components/Forms/TextArea";
 
 import dynamic from "next/dynamic";
 import { joditConfig } from "@/config";
+import TECAutoComplete from "@/components/Forms/AutoComplete";
+import TECMultipleAutoComplete from "@/components/Forms/MultipleAutoComplete";
+import Tags from "@/components/Forms/MultipleAutoComplete";
+import TECMultipleAutoCompleteValue from "@/components/Forms/MultipleAutoComplete";
 
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
@@ -75,13 +86,11 @@ const CreateProductModal = ({ open, setOpen }: TProps) => {
 
   return (
     <TECModal open={open} setOpen={setOpen} title="Create a new product">
-        
       <TECForm
         onSubmit={submitHandler}
         resolver={zodResolver(userSchema)}
         defaultValues={defaultValues}
       >
-
         <Grid container spacing={2} sx={{ my: 2 }}>
           <Grid item xs={12} sm={6} md={6}>
             <TECInput
@@ -100,27 +109,35 @@ const CreateProductModal = ({ open, setOpen }: TProps) => {
             />
           </Grid>
           <Grid item xs={12} sm={6} md={6}>
-            <TECSelect
-              items={Gender}
-              name="gender"
+            <TECInput
+              name="discount_price"
               size="medium"
+              label="Discount Price "
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={6}>
+            <TECMultipleAutoCompleteValue
+              name="tags"
               label="Tags"
               fullWidth
+              options={productTags}
+              multiple
             />
           </Grid>
           <Grid item xs={12} sm={6} md={6}>
-            <TECSelect
-              items={Gender}
-              name="gender"
-              label="Categories"
+            <TECMultipleAutoCompleteValue
+              name="category"
+              label="Category"
               fullWidth
-              size="medium"
+              options={productCategories}
+              multiple
             />
           </Grid>
           <Grid item xs={12} sm={6} md={6}>
             <TECSelect
-              items={Gender}
-              name="gender"
+              items={productBrands}
+              name="brand"
               label="Brand"
               size="medium"
               fullWidth
@@ -128,16 +145,19 @@ const CreateProductModal = ({ open, setOpen }: TProps) => {
           </Grid>
           <Grid item xs={12} sm={6} md={6}>
             <TECInput
-              name="name.lastName"
+              name="stock"
               size="medium"
               label="Stock Quantity  "
               fullWidth
             />
           </Grid>
           <Grid item xs={12} sm={6} md={6}>
+            <TECInput name="slug" size="medium" label="Slug" fullWidth />
+          </Grid>
+          <Grid item xs={12} sm={6} md={6}>
             <TECSelect
-              items={Gender}
-              name="gender"
+              items={color}
+              name="color"
               size="medium"
               label="Color"
               fullWidth
@@ -145,8 +165,8 @@ const CreateProductModal = ({ open, setOpen }: TProps) => {
           </Grid>
           <Grid item xs={12} sm={6} md={6}>
             <TECSelect
-              items={Gender}
-              name="gender"
+              items={productSizes}
+              name="size"
               size="medium"
               label="Size"
               fullWidth
@@ -157,7 +177,7 @@ const CreateProductModal = ({ open, setOpen }: TProps) => {
           <TECTextArea
             placeholder="Short Description"
             minRows={3}
-            name="Short Description "
+            name="description"
             sx={textAreaStyle}
           />
         </Grid>
@@ -180,7 +200,7 @@ const CreateProductModal = ({ open, setOpen }: TProps) => {
         <Grid container spacing={2} sx={{ my: 2 }}>
           <Grid item xs={12} sm={6} md={6}>
             <TECInput
-              name="name.firstName"
+              name="meta_name"
               size="medium"
               label="Meta Name"
               fullWidth
@@ -188,27 +208,33 @@ const CreateProductModal = ({ open, setOpen }: TProps) => {
           </Grid>
           <Grid item xs={12} sm={6} md={6}>
             <TECInput
-              name="name.firstName"
+              name="meta_keywords"
               size="medium"
               label=" Meta Keywords"
               fullWidth
             />
           </Grid>
-          
         </Grid>
         <Grid item>
           <TECTextArea
             placeholder="Meta Description"
             minRows={3}
-            name="Short Description "
+            name="meta_description"
             sx={textAreaStyle}
           />
         </Grid>
-       <Box justifyContent='center' alignItems='center' sx={{}}>
-       <Button type="submit" variant="contained" color="primary">
-          Create a Product
-        </Button>
-       </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "10px",
+          }}
+        >
+          <Button type="submit" variant="contained" color="primary">
+            Create a Product
+          </Button>
+        </Box>
       </TECForm>
     </TECModal>
   );

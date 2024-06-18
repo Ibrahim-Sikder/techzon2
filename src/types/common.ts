@@ -1,4 +1,3 @@
-
 import { USER_ROLE } from "@/constant/role";
 import { SvgIconTypeMap } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
@@ -38,12 +37,46 @@ export type IGenericErrorMessage = {
 };
 
 export const Gender = ["male", "female", "others"];
+export const color = ["red", "green", "blue"];
 export const Role = ["admin", "editor", "manager"];
-export const role = [
-  "As BUSINESS OWNER",
-  "AS A INVESTOR",
+export const role = ["As BUSINESS OWNER", "AS A INVESTOR"];
+
+export const productSizes = ["XXL", "XS", "S", "M", "L", "XL", "XXS"];
+
+export const productBrands = [
+  "Apple",
+  "Samsung",
+  "Sony",
+  "Nike",
+  "Adidas",
+  "Microsoft",
+  "Google",
+  "Amazon",
+  "Dell",
+  "HP",
+  "Lenovo",
+  "Asus",
+  "LG",
 ];
 
+export const productTags = [
+  { label: "New Arrival" },
+  { label: "Best Seller" },
+  { label: "Discount" },
+  { label: "Limited Edition" },
+  { label: "Trending" },
+  { label: "Exclusive" },
+  { label: "On Sale" },
+];
+export const productCategories = [
+  { label: "Electronics" },
+  { label: "Clothing" },
+  { label: "Home and Kitchen" },
+  { label: "Books" },
+  { label: "Beauty and Personal Care" },
+  { label: "Sports and Outdoors" },
+  { label: "Toys and Games" },
+];
 
 import { ReactNode } from "react";
 
@@ -55,7 +88,7 @@ export type TContainer = {
 
 export type TProduct = {
   brand: any;
-  _id:string | number ,
+  _id: string | number;
   id: number | string;
   name: string;
   image: string;
@@ -65,7 +98,6 @@ export type TProduct = {
   categories: string;
   rating: string;
 };
-
 
 export type TFlashSale = {
   _id: string;
@@ -84,6 +116,3 @@ export type TProductId = {
     product: any;
   };
 };
-
-
-

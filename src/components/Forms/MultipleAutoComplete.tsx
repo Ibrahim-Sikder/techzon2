@@ -7,7 +7,7 @@ type Option = {
   label: string;
 };
 
-type TStateProps = {
+type ControlledAutocompleteProps = {
   name: string;
   label?: string;
   fullWidth?: boolean;
@@ -16,9 +16,10 @@ type TStateProps = {
   options: Option[];
   size?: "small" | "medium";
   margin?: "none" | "normal" | "dense";
+  multiple?: boolean;
 };
 
-const TECAutoComplete = ({
+const TECMultipleAutoCompleteValue = ({
   name,
   label = "Movie",
   fullWidth = false,
@@ -27,7 +28,8 @@ const TECAutoComplete = ({
   options,
   size = "small",
   margin = "normal",
-}: TStateProps) => {
+  multiple = false,
+}: ControlledAutocompleteProps) => {
   const { control } = useFormContext();
 
   return (
@@ -36,15 +38,13 @@ const TECAutoComplete = ({
       name={name}
       render={({ field, fieldState: { error } }) => (
         <Autocomplete
-          {...field}
           freeSolo
+          {...field}
+          multiple={multiple}
           disablePortal
-          id="combo-box-demo"
           options={options}
-          size={size}
-          getOptionLabel={(option) =>
-            typeof option === "string" ? option : option.label
-          }
+          getOptionLabel={(option) => option.label}
+          filterSelectedOptions
           sx={{
             width: fullWidth ? "100%" : 300,
             "& .MuiAutocomplete-listbox": {
@@ -53,12 +53,9 @@ const TECAutoComplete = ({
             },
             ...sx,
           }}
-          onChange={(_, newValue) =>
-            field.onChange(newValue ? newValue.label : newValue)
-          }
+          onChange={(_, newValue) => field.onChange(newValue)}
           renderInput={(params) => (
             <TextField
-            
               {...params}
               label={label}
               fullWidth={fullWidth}
@@ -78,4 +75,4 @@ const TECAutoComplete = ({
   );
 };
 
-export default TECAutoComplete;
+export default TECMultipleAutoCompleteValue;

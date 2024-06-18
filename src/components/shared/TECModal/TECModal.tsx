@@ -53,7 +53,7 @@ export default function TECModal({
           },
         }}
       >
-        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+        <DialogTitle sx={{ m: 0, p: 2, textAlign: 'center',fontWeight:'bold' }} id="customized-dialog-title">
           {title}
         </DialogTitle>
         <IconButton
