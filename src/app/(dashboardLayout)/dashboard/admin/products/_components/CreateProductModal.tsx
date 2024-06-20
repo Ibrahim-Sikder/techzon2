@@ -88,13 +88,13 @@ const CreateProductModal = ({ open, setOpen }: TProps) => {
     <TECModal open={open} setOpen={setOpen} title="Create a new product">
       <TECForm
         onSubmit={submitHandler}
-        resolver={zodResolver(userSchema)}
-        defaultValues={defaultValues}
+        // resolver={zodResolver(userSchema)}
+        // defaultValues={defaultValues}
       >
         <Grid container spacing={2} sx={{ my: 2 }}>
           <Grid item xs={12} sm={6} md={6}>
             <TECInput
-              name="name.firstName"
+              name="name"
               size="medium"
               label="Product Name"
               fullWidth
@@ -102,7 +102,7 @@ const CreateProductModal = ({ open, setOpen }: TProps) => {
           </Grid>
           <Grid item xs={12} sm={6} md={6}>
             <TECInput
-              name="name.lastName"
+              name="price"
               size="medium"
               label="Price"
               fullWidth
