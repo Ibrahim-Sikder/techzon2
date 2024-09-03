@@ -1,10 +1,7 @@
-
 import type { BaseQueryFn } from "@reduxjs/toolkit/query";
 import type { AxiosError, AxiosRequestConfig } from "axios";
 import { instance } from "./axiosInstant";
 import { IMeta } from "@/types";
-
-
 
 export const axiosBaseQuery =
   (
@@ -27,7 +24,7 @@ export const axiosBaseQuery =
       const result = await instance({
         url: baseUrl + url,
         method,
-        data,
+        data, // This should match what the backend expects
         params,
         headers: {
           "Content-type": contentType || "application/json",

@@ -1,5 +1,4 @@
 .footer {
-
 	display: flex;
 	justify-content: space-between;
 	padding: 50px 0;
@@ -17,10 +16,11 @@
 		flex-wrap: wrap;
 	}
 }
+
 @media only screen and (max-width: 500px) {
 	.footer {
 		display: block;
-	padding:0px;
+		padding: 0px;
 	}
 
 }

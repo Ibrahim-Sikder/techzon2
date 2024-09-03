@@ -1,18 +1,10 @@
 import "./Footer.css";
-import { HiEnvelope, HiMiniPhone, HiHome } from "react-icons/hi2";
-import {
-  FaFacebook,
-  FaInstagramSquare,
-  FaTwitter,
-  FaLinkedin,
-} from "react-icons/fa";
-
 import Link from "next/link";
 import Container from "../Container";
 
 const Footer = () => {
   return (
-    <div className="bg-[#EFF0F5] sectionMargin ">
+    <div className="bg-[#111] text-white sectionMargin ">
       <Container className="">
         <div className="footer">
           <div>

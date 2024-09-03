@@ -1,5 +1,3 @@
-'use client'
-
 import React from "react";
 import {
   FieldValues,
@@ -26,7 +24,7 @@ const TECForm = ({
 }: TInputProps) => {
   const formConfig: TFormConfig = {};
 
-  if (formConfig) {
+  if (resolver) {
     formConfig["resolver"] = resolver;
   }
   if (defaultValues) {
@@ -35,9 +33,9 @@ const TECForm = ({
   const methods = useForm(formConfig);
   const { handleSubmit, reset } = methods;
 
-  const submit: SubmitHandler<FieldValues> = (data: FieldValues) => {
-    // console.log(data);
-    onSubmit(data);
+  const submit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
+    await onSubmit(data);
+    
   };
 
   return (

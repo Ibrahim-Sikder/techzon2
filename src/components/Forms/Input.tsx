@@ -13,9 +13,12 @@ type TInputProps = {
   required?: boolean;
   variant?: "outlined" | "filled" | "standard";
   margin?: "none" | "normal" | "dense";
-  onChange?: (e: any) => void;
+  multiline?: boolean;
+  rows?: number;
+  disabled?: boolean;
+  value?: string;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
-
 
 const TECInput = ({
   name,
@@ -24,20 +27,28 @@ const TECInput = ({
   type = "text",
   fullWidth,
   sx,
+  disabled,
   placeholder,
   required,
   variant = "outlined",
   margin = "normal",
-  onChange, // Add this line
+  multiline = false,
+  rows = 4,
+  onChange,
+  value
 }: TInputProps) => {
   const { control } = useFormContext();
   return (
     <Controller
       control={control}
       name={name}
-      render={({ field, fieldState: { error } }) => (
+      render={({
+        field: { onChange: fieldOnChange, value: fieldValue },
+        fieldState: { error },
+        formState,
+      }) => (
         <TextField
-          {...field}
+          onChange={onChange || fieldOnChange}
           type={type}
           label={label}
           size={size}
@@ -47,12 +58,15 @@ const TECInput = ({
           placeholder={placeholder}
           required={required}
           margin={margin}
-          error={!!error?.message}
+          error={!!error}
           helperText={error?.message}
-          onChange={(e) => {
-            field.onChange(e);
-            onChange?.(e); // Call the onChange prop if provided
-          }}
+          multiline={multiline}
+          rows={rows}
+          value={value || fieldValue}
+          defaultChecked={
+            formState.dirtyFields[name] ? formState.dirtyFields[name] : value
+          }
+          disabled={disabled}
         />
       )}
     />
