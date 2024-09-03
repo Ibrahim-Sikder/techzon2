@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import Providers from "@/lib/Providers";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
+import MessageIcons from "@/components/Message/MessageIcons";
 
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ export default function RootLayout({
         <Toaster position="bottom-right" richColors />
         <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
       </body>
+      <MessageIcons/>
     </Providers>
 
   </html>
