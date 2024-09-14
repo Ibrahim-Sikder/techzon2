@@ -60,58 +60,7 @@ const Message = () => {
           </div>
           <hr className="border " />
           <div className="chatWraps">
-            <div className="flex justify-end">
-              <div>
-                <div className="flex ">
-                  <div>
-                    <div className="userChat">
-                      <span>
-                        Nice! What features are you finding interesting?
-                      </span>
-                    </div>
-                    <div className="userChat">
-                      <span>
-                        Hey Micheals, have you had a chance to check out the new
-                        admin dashboard?
-                      </span>
-                    </div>
-                  </div>
-                  <Image src={user} className="w-5 h-5 md:w-10 md:h-10 rounded-full" alt="" />
-                </div>
-                <div className="flex justify-end mr-12 ">04.55</div>
-              </div>
-            </div>
-            <div className="flex justify-start mt-5 ">
-              <div>
-                <div className="flex ">
-                  <Image src={user} className="w-5 h-5 md:w-10 md:h-10 rounded-full" alt="" />
-                  <div>
-                    <div className="adminChat">
-                      <span>
-                        Yeah, that's the one! It's got a sleek Material Design,
-                        and the features are pretty robust.
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex ml-10  ">04.50</div>
-              </div>
-            </div>
-            <div className="flex justify-end">
-              <div>
-                <div className="flex ">
-                  <div>
-                    <div className="userChat">
-                      <span>
-                        Nice! What features are you finding interesting?
-                      </span>
-                    </div>
-                  </div>
-                  <Image src={user} className="w-5 h-5 md:w-10 md:h-10 rounded-full" alt="" />
-                </div>
-                <div className="flex justify-end mr-12 ">04.55</div>
-              </div>
-            </div>
+         
             <div className="flex justify-start mt-5 ">
               <div>
                 <div className="flex ">
@@ -146,7 +95,8 @@ const Message = () => {
               </div>
             </div>
           </div>
-          <div className="chatting ">
+         <form>
+         <div className="chatting ">
             <div className="flex flex-wrap gap-3  items-center justify-between ">
               <div className="flex items-center space-x-2">
                 <HiOutlineEmojiSad className="md:size-8 " />
@@ -166,6 +116,7 @@ const Message = () => {
               </div>
             </div>
           </div>
+         </form>
         </div>
       </div>
       <div className="p-5"></div>

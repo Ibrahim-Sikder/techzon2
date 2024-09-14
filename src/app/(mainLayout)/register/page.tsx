@@ -11,20 +11,21 @@ import TECForm from "@/components/Forms/Form";
 import { FieldValues } from "react-hook-form";
 import TECInput from "@/components/Forms/Input";
 import { toast } from "sonner";
-import { useRegisterMutation } from "@/redux/api/userApi";
 
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { setCookie } from "@/helpers/axios/Cookies";
 import { useRouter } from "next/navigation";
+import { storeUserInfo } from "@/services/auth.service";
+import { useRegisterMutation } from "@/redux/api/authApi";
 
 const userSchema = z
   .object({
-    firstName: z.string().nonempty('First name is required'),
-    lastName: z.string().nonempty('Last name is required'),
+
+    name: z.string().nonempty('Last name is required'),
     email: z.string().email('Invalid email address').nonempty('Email is required'),
-    password: z.string().min(8, 'Password must be at least 8 characters'),
+    password: z.string().min(6, 'Password must be at least 8 characters'),
     confirmPassword: z.string().nonempty('Confirm password is required'),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -41,8 +42,8 @@ const Register = () => {
   const [register] = useRegisterMutation()
   const router = useRouter()
   const defaultValues: UserSchema = {
-    firstName: "",
-    lastName: "",
+
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -58,15 +59,14 @@ const Register = () => {
 
 
   const submitHandler = async (data: FieldValues) => {
+    console.log(data)
     try {
       const res = await register(data).unwrap();
-      console.log(res);
-
-      // Set the cookie with the correct 'expires' option
-      setCookie('token', res?.token, { expires: 7 });  // Use 'expires' instead of 'expiresIn'
-
-      toast.success(res?.message || "User created successfully!");
-      router.push('/');
+      console.log(res)
+      storeUserInfo({ accessToken: res?.accessToken });
+      setCookie('token', res?.accessToken, { expires: 7 });
+      toast.success(res.message || 'Registration successfully!')
+      router.push('/')
     } catch (err) {
       const error = err as ApiError;
       console.error("API Error:", error);
@@ -88,12 +88,10 @@ const Register = () => {
 
         <div className="SignupFormWrap">
           <div>
-            <Grid container spacing={1}>
-              <Grid item xs={12} sm={6} md={6} lg={6}>
-                <TECInput fullWidth type="text" name="firstName" label="First Name " />
-              </Grid>
-              <Grid item xs={12} sm={6} md={6} lg={6}>
-                <TECInput fullWidth type="text" name="lastName" label="Last Name " />
+            <Grid container>
+
+              <Grid item xs={12} sm={12} md={12} lg={12}>
+                <TECInput fullWidth type="text" name="name" label=" Name " />
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={12}>
                 <TECInput fullWidth type="email" name="email" label="Email Address " />

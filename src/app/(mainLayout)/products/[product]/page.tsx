@@ -27,7 +27,7 @@ const SingleProduct = () => {
   ];
 
   const handleSubmit = (data: FieldValues) => {
-    console.log(data);
+  
   };
   return (
     <Container className="mt-10">

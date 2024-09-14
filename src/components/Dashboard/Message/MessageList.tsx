@@ -1,10 +1,8 @@
 'use client'
 
 import * as React from "react";
-import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import AllMessageList from "./AllMessageList";
 import GroupChat from "./GroupChat";
@@ -23,18 +21,12 @@ function CustomTabPanel(props: any) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          {children} {/* Directly render children here */}
         </Box>
       )}
     </div>
   );
 }
-
-CustomTabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
 
 function a11yProps(index: any) {
   return {
@@ -51,7 +43,7 @@ export default function MessageList() {
   };
 
   return (
-    <Box sx={{ width: "100%", }}>
+    <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}

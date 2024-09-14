@@ -18,7 +18,7 @@ const GroupChat = () => {
       name: "MD Arman",
       message: "That cool, go for it...😀",
       time: "Sun 12.30",
-    },
+    },   
     {
       id: 2,
       image: user3,

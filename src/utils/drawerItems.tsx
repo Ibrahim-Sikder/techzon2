@@ -43,6 +43,11 @@ export const drawerItems = (role: userRole): DrawerItem[] => {
           path: `${role}/products`,
           icon: Dashboard,
         },
+        {
+          title: "Support",
+          path: `${role}/support`,
+          icon: Dashboard,
+        },
         
       );
       break;

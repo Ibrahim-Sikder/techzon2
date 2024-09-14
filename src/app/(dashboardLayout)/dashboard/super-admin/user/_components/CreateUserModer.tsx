@@ -69,11 +69,11 @@ const UserCreateModal = ({ open, setOpen }: TProps) => {
   };
 
   const submitHandler = async (values: FieldValues) => {
-    console.log("Submitted Values: ", values);
+
 
     try {
       const res = await createUser(values).unwrap();
-      console.log("Response: ", res);
+      
 
       if (res.employeeId) {
         toast.success("User created successfully!");
@@ -81,7 +81,7 @@ const UserCreateModal = ({ open, setOpen }: TProps) => {
       }
     } catch (error: any) {
       toast.error(error?.data.message, { duration: 5000 });
-      console.log("Error: ", error);
+ 
     }
   };
 

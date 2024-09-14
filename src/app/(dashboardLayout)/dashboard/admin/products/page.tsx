@@ -41,7 +41,6 @@ const columns: GridColDef[] = [
 const Users = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data, isLoading, isError, error } = useGetAllUsersQuery(undefined);
-  console.log(data);
   const handleClickOpen = () => {
     setIsModalOpen(true);
   };

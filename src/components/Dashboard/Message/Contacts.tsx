@@ -2,6 +2,7 @@ import user from "../../../assets/chat/chat.jpg";
 import user2 from "../../../assets/chat/chat2.jpg";
 import user3 from "../../../assets/chat/chat3.jpg";
 import user4 from "../../../assets/chat/chat.jpg";
+import Image from "next/image";
 const Contacts = () => {
   const messageData = [
     {
@@ -88,12 +89,12 @@ const Contacts = () => {
             >
               <div className="flex items-center">
                 <div className="relative">
-                  <img
+                  <Image
                     src={data.image}
                     className="h-10 w-10 rounded-full"
                     alt="user"
                   />
-                  <div className={`activeUsers ${i === 0 ? "bg-[#22C55E]"  : "bg-[#E74C3C]"}`}></div>
+                  <div className={`activeUsers ${i === 0 ? "bg-[#22C55E]" : "bg-[#E74C3C]"}`}></div>
                 </div>
                 <div className="ml-2">
                   <h3>{data.name} </h3>

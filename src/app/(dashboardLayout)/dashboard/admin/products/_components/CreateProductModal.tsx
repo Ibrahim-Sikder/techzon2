@@ -79,7 +79,7 @@ const textAreaStyle = {
 
 const CreateProductModal = ({ open, setOpen }: TProps) => {
   const submitHandler = async (values: FieldValues) => {
-    console.log(values);
+
   };
   const editor = useRef<any | null>(null);
   const [content, setContent] = useState<string>("");

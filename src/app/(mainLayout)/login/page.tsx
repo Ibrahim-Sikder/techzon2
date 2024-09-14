@@ -11,10 +11,11 @@ import TECForm from '@/components/Forms/Form';
 import { FieldValues } from 'react-hook-form';
 import TECInput from '@/components/Forms/Input';
 import Container from '@/components/shared/Container';
-import { useLoginMutation } from '@/redux/api/userApi';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { setCookie } from '@/helpers/axios/Cookies';
+import { storeUserInfo } from '@/services/auth.service';
+import { useLoginMutation } from '@/redux/api/authApi';
 
 interface LoginResponse {
     accessToken: string;
@@ -27,13 +28,18 @@ const Login = () => {
     const handleSubmit = async (data: FieldValues) => {
         try {
             const res = await login(data).unwrap() as LoginResponse;
-            setCookie('token', res.accessToken, { expires: 7 });
-            toast.success(res.message || 'Login Successful!');
-            router.push('/');
+            console.log(res)
+
+            // storeUserInfo({ accessToken: res?.accessToken });
+            // setCookie('token', res?.accessToken, { expires: 7 });
+
+            toast.success(res.message || 'OTP Sent to your Email!');
+            router.push(`/verify?email=${data?.email}`);
         } catch (err: any) {
             toast.error(err?.data?.message || 'An error occurred during login.');
         }
     };
+
 
 
     return (
