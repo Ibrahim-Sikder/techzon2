@@ -28,7 +28,7 @@ const Login = () => {
     const handleSubmit = async (data: FieldValues) => {
         try {
             const res = await login(data).unwrap() as LoginResponse;
-            console.log(res)
+         
 
             // storeUserInfo({ accessToken: res?.accessToken });
             // setCookie('token', res?.accessToken, { expires: 7 });

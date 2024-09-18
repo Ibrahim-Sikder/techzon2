@@ -1,10 +1,9 @@
-
-import { getNewAccessToken } from "@/services/actions/auth.services";
-import { setAccessToken } from "@/services/actions/setAccessToken";
+import { authKey } from "@/constant/authkey";
+import { getNewAccessToken } from "@/services/auth.service";
+import { setAccessToken } from "@/services/setAccessToken";
 import { IGenericErrorResponse, ResponseSuccessType } from "@/types";
 import { getFromLocalStorage, setToLocalStorage } from "@/utils/local.storage";
 import axios from "axios";
-import { authKey } from "../../constant/authkey";
 
 const instance = axios.create();
 instance.defaults.headers.post["Content-Type"] = "application/json";

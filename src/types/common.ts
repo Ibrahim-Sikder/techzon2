@@ -25,11 +25,12 @@ export type ResponseSuccessType = {
   meta?: IMeta;
 };
 
-export type IGenericErrorResponse = {
-  success: boolean;
+// types/index.ts
+export interface IGenericErrorResponse {
+  statusCode: number;
   message: string;
-  error: any;
-};
+  errorMessages?: string | string[];
+}
 
 export type IGenericErrorMessage = {
   path: string | number;

@@ -126,6 +126,68 @@
         width: 975px;
     }
 }
+
+
+
+
+
+/* message style here */
+
+.messageContainer {
+    padding: 10px;
+  }
+  
+  .messageWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  
+  .message {
+    display: flex;
+    align-items: center;
+  }
+  
+  .sentMessage .message {
+    align-items: flex-end;
+    flex-direction: row-reverse;
+  }
+  
+  .receivedMessage .message {
+    align-items: flex-start;
+  }
+  
+  .messageContent {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 15px;
+    background-color: #f1f1f1;
+  }
+  
+  .sent .messageContent {
+    background-color: #e1ffc7;
+  }
+  
+  .received .messageContent {
+    background-color: #fff;
+  }
+  
+  .profileImage {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 10px;
+  }
+  
+  .timestamp {
+    font-size: 0.8rem;
+    color: gray;
+  }
+
+  
+
+
+  
 @media only screen and (max-width:1440px){
     .chatInput {
         width: 715px;

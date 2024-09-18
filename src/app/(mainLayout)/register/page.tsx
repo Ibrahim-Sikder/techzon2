@@ -59,10 +59,10 @@ const Register = () => {
 
 
   const submitHandler = async (data: FieldValues) => {
-    console.log(data)
+  
     try {
       const res = await register(data).unwrap();
-      console.log(res)
+  
       storeUserInfo({ accessToken: res?.accessToken });
       setCookie('token', res?.accessToken, { expires: 7 });
       toast.success(res.message || 'Registration successfully!')

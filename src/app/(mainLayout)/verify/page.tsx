@@ -42,7 +42,7 @@ const OTPInput = ({
 
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>, idx: number) => {
         if (e.key === "Backspace" && !e.currentTarget.value && idx > 0) {
-            console.log("Moving focus to previous input");
+      
             inputsRef.current[idx - 1]?.focus();
         }
     };
@@ -105,18 +105,18 @@ const OTPVerifyPage = () => {
         try {
             const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/verify`,
-                data // Ensure you're passing data as the body
+                data 
             );
-            console.log(response)
+         
             if (response?.status === 200) {
-                storeUserInfo({ accessToken: response?.data?.data?.user });
+                storeUserInfo({ accessToken: response?.data?.data?.accessToken });
                 setCookie('token', response?.data?.data.accessToken, { expires: 7 });
                 toast.success(response?.data?.message);
-                router.push("/");
+                router.push("/dashboard");
 
             }
         } catch (error: any) {
-            console.log("Error response:", error?.response);
+           
             if (error?.response) {
                 const { status, data } = error.response;
                 if ([400, 401, 409, 404, 500].includes(status)) {
