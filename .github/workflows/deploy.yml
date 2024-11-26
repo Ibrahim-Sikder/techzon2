@@ -1,75 +1,37 @@
-name: Node.js Deployment with NGINX and SSL
+name: Deploy to VPS
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main 
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  
+
     steps:
-      - name: Deploy to VPS using SSH
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.PRIVATE_KEY }}
-          port: ${{ secrets.PORT }}
-          script: |
-            set -e
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-            # Variables
-            PROJECT_DIR="/var/www/html/zrf/client"
-            client_CONF="/etc/nginx/sites-available/client.zrf.info"
-            PROJECT_CONF="$PROJECT_DIR/nginx.conf"
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
 
-            # Navigate to project directory
-            cd $PROJECT_DIR
+    - name: Install dependencies
+      run: npm install
 
-            # Clone the repository if not exists
-            if [ ! -d ".git" ]; then
-              git clone git@github.com:SoftyPy-IT/ziaurrahmanfoundation.git .
-            fi
+    - name: Skip tests
+      run: echo "Skipping tests for now"
 
-            # Fetch latest changes and reset to main branch
-            git fetch --all
-            git reset --hard origin/main
+    - name: Test SSH connection
+      run: |
+        ssh -o StrictHostKeyChecking=no user@sub.softypy.com "echo 'Connected'"
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-            # Setup environment and dependencies
-            cp .env.example .env
-
-            npm install --legacy-peer-deps
-            npm run build
-
-            # Deploy NGINX Configuration Conditionally
-            if ! diff -q "$PROJECT_CONF" "$client_CONF" > /dev/null; then
-              echo "NGINX configuration has changed. Updating..."
-              sudo cp "$PROJECT_CONF" "$client_CONF"
-              sudo ln -sf "$client_CONF" /etc/nginx/sites-enabled/client.zrf.info
-
-            # Ensure symbolic link exists in sites-enabled
-              if [ ! -f "/etc/nginx/sites-enabled/client.zrf.info" ]; then
-              sudo ln -sf "$client_CONF" /etc/nginx/sites-enabled/client.zrf.info
-              fi
-
-              # Test and reload NGINX
-              sudo nginx -t && sudo systemctl reload nginx
-            else
-              echo "NGINX configuration is unchanged. Skipping update."
-            fi
-
-            # Manage SSL using Certbot
-
-              sudo certbot --nginx -d zrf.info -d www.zrf.info --non-interactive --agree-tos --register-unsafely-without-email
-
-            # Manage PM2 process
-            if pm2 list | grep -q "sub.softypy.com"; then
-              echo "PM2 process already exists. Restarting..."
-              pm2 restart sub.softypy.com
-            else
-              echo "No PM2 process found. Starting..."
-              pm2 start npm --name "sub.softypy.com" -- start
-            fi
-
-            # Save PM2 process list
-            pm2 save
+    - name: Deploy to VPS
+      run: |
+        ssh -o StrictHostKeyChecking=no user@sub.softypy.com "cd /home/user/myapp && git pull && npm install && pm2 restart all"
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
