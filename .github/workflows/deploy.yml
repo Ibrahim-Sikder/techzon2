@@ -3,26 +3,30 @@ name: Deploy to VPS
 on:
   push:
     branches:
-      - main
+      - main 
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  
 
     steps:
-    - name: Checkout the repository
-      uses: actions/checkout@v2
 
-    - name: Set up SSH agent
-      uses: webfactory/ssh-agent@v0.5.3
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}  # Referencing the secret SSH key
+        node-version: '14' 
 
-    - name: Add GitHub.com to known hosts
-      run: |
-        mkdir -p ~/.ssh
-        ssh-keyscan github.com >> ~/.ssh/known_hosts
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
 
     - name: Deploy to VPS
       run: |
-        ssh -o StrictHostKeyChecking=no user@your-vps-ip "cd /path/to/your/project && git pull && npm install && pm2 restart all"
+        ssh -o StrictHostKeyChecking=no user@sub.softypy.com "cd /home/user/myapp && git pull && npm install && pm2 restart all"
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
