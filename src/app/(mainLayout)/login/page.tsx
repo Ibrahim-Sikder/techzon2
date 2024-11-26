@@ -2,19 +2,16 @@
 
 import google from '../../../assets/images/google.png'
 import { FaFacebookF } from "react-icons/fa6";
-
 import Image from 'next/image';
 import '../register/register.css'
 import Link from 'next/link';
-import { Grid, Input, TextField } from '@mui/material';
+import { Grid} from '@mui/material';
 import TECForm from '@/components/Forms/Form';
 import { FieldValues } from 'react-hook-form';
 import TECInput from '@/components/Forms/Input';
 import Container from '@/components/shared/Container';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { setCookie } from '@/helpers/axios/Cookies';
-import { storeUserInfo } from '@/services/auth.service';
 import { useLoginMutation } from '@/redux/api/authApi';
 
 interface LoginResponse {
@@ -26,8 +23,10 @@ const Login = () => {
     const [login] = useLoginMutation()
     const router = useRouter()
     const handleSubmit = async (data: FieldValues) => {
+        console.log('real data', data)
         try {
             const res = await login(data).unwrap() as LoginResponse;
+            console.log(res)
          
 
             // storeUserInfo({ accessToken: res?.accessToken });

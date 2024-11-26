@@ -9,11 +9,6 @@ import './Message.css';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en.json';
 import { useSocket } from '@/hooks/useSocket';
-import { io } from 'socket.io-client';
-
-
-const ENDPOINT = "http://localhost:4000";
-var socket, selectedChatCompare;
 
 TimeAgo.addDefaultLocale(en);
 const timeAgo = new TimeAgo('en-US');
@@ -36,47 +31,54 @@ export type TMessage = {
 
 const UserConversation = ({ user }: ConversationProps) => {
   const token = getCookie('token');
-  const decoded = token ? (decodedToken(token) as CustomJwtPayload) : null;
+  const decoded = token ? decodedToken(token) as CustomJwtPayload : null;
   const senderId = decoded?.id;
-  const [socketConnected, setSocketConnected] = useState(false);
-  const [messages, setMessages] = useState<TMessage[]>([]);
+  const chatUserId = user._id;
+  const { data, isLoading } = useGetAllMessagesQuery({ senderId, chatUserId });
+  const {socket, onlineUsers} = useSocket();
 
-  // Fetch all previous messages
-  const { data, isLoading, error } = useGetAllMessagesQuery({ senderId, chatUserId: user._id });
+
+  const [messages, setMessages] = useState<TMessage[]>(data?.data || []);
+
+  // useEffect(() => {
+  //   if (socket) {
+  //     socket.emit('setup', { _id: senderId });
+  //     socket.on('message received', (newMessage: TMessage) => {
+  //       setMessages((prevMessages) => [...prevMessages, newMessage]);
+  //     });
+  //   }
+  //   return () => {
+  //     if (socket) {
+  //       socket.off('message received');
+  //     }
+  //   };
+  // }, [socket, senderId]);
 
   useEffect(() => {
-    if (data) {
-      setMessages(Array.isArray(data?.data) ? data?.data : []);
- 
-    }
+    setMessages(data?.data || []);
   }, [data]);
 
+  if (isLoading) {
+    return <p>Loading.......</p>;
+  }
 
+  if (!data && !isLoading) {
+    return <p>No messages available.</p>;
+  }
 
- 
-  useEffect(() => {
-    socket = io(ENDPOINT);
-    socket.emit("setup", user);
-    socket.on("connected", () => setSocketConnected(true));
-  }, []);
-
-
-  useEffect(() => {
-    setMessages(data?.data)
-  }, [data]);
-
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading messages</div>;
   return (
     <div className="messageContainer">
-      {messages?.map((message, index) => (
+      {messages.map((message, index) => (
         <div key={index} className={`messageWrapper ${message.senderId === senderId ? 'sentMessage' : 'receivedMessage'}`}>
           {message.senderId === senderId ? (
             <div className="message sent">
               <div className="messageContent">
                 <span>{message.message}</span>
-                <Image src={user.image || profile} className="profileImage" alt="User profile" />
+                <Image
+                  src={user.image || profile}
+                  className="profileImage"
+                  alt="User profile"
+                />
               </div>
               <div className="timestamp">
                 {timeAgo.format(new Date(message.createdAt))}
@@ -84,7 +86,11 @@ const UserConversation = ({ user }: ConversationProps) => {
             </div>
           ) : (
             <div className="message received">
-              <Image src={user.image || profile} className="profileImage" alt="Admin profile" />
+              <Image
+                src={user.image || profile}
+                className="profileImage"
+                alt="Admin profile"
+              />
               <div className="messageContent">
                 <span>{message.message}</span>
               </div>
@@ -98,6 +104,5 @@ const UserConversation = ({ user }: ConversationProps) => {
     </div>
   );
 };
-
 
 export default UserConversation;
