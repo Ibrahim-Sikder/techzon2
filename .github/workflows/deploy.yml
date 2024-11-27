@@ -36,5 +36,11 @@ jobs:
             git pull origin main || exit 1
             npm install || exit 1
             npm run build || exit 1
+            
+            pm2 list
+
             pm2 restart techzon2 || pm2 start npm --name "techzon2" -- start || exit 1
+
+            pm2 logs techzon2 --lines 20 || exit 1
+
             echo "Deployment successful!"
