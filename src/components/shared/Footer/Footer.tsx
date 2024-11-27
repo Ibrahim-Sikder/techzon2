@@ -19,6 +19,7 @@ const Footer = () => {
               <li>Home Fitness Equipment</li>
               <li>Desk Accessories</li>
               <li>Plant-Based Skincare</li>
+              <li>Update Products </li>
             </ul>
           </div>
           <div>
