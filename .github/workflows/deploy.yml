@@ -3,30 +3,30 @@ name: Deploy to VPS
 on:
   push:
     branches:
-      - main 
+      - main  # Trigger deployment on a push to the 'main' branch
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest  # Use Ubuntu as the runner for the workflow
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3  # Checkout your repository code
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '14'
+        node-version: '14'  # Use Node.js version 14
 
     - name: Install dependencies
-      run: npm install
+      run: npm install  # Install the dependencies listed in package.json
 
     - name: Skip tests
-      run: echo "Skipping tests for now"
+      run: echo "Skipping tests for now"  # Skip tests (if not required)
 
     - name: Test SSH connection
       run: |
-        ssh -o StrictHostKeyChecking=no user@sub.softypy.com "echo 'Connected'"
+        ssh -o StrictHostKeyChecking=no user@sub.softypy.com "echo 'Connected'"  # Test SSH connection
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 

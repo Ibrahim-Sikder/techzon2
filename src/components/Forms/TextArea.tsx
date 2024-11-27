@@ -29,11 +29,11 @@ const TECTextArea = ({
           {...field}
           placeholder={placeholder}
           minRows={minRows}
-          style={{ 
-            width: '100%',
+          // style={{ 
+          //   width: '100%',
           
-            ...sx 
-          }}
+          //   ...sx 
+          // }}
         />
       )}
     />

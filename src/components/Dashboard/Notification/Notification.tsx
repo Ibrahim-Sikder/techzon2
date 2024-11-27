@@ -3,7 +3,7 @@
 import { HiOutlineHome } from "react-icons/hi";
 import "./Notification.css";
 
-const EmployeeSalary = ({ open }) => {
+const EmployeeSalary = () => {
   const notificationData = [
     {
       id: 1,
@@ -90,7 +90,7 @@ const EmployeeSalary = ({ open }) => {
             </tr>
           </thead>
           <tbody>
-            {notificationData.map((data, i) => (
+            {notificationData.map((data) => (
               <tr key={data.id}>
                 <td> {data.notificationId}</td>
                 <td>{data.timeStamps}</td>
