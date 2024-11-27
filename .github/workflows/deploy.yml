@@ -1,37 +1,39 @@
-name: Deploy to VPS
+name: Deploy to Hostinger
 
 on:
   push:
     branches:
-      - main  # Trigger deployment on a push to the 'main' branch
+      - main
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest  # Use Ubuntu as the runner for the workflow
+    runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3  # Checkout your repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '14'  # Use Node.js version 14
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
 
-    - name: Install dependencies
-      run: npm install  # Install the dependencies listed in package.json
+      - name: Install dependencies
+        run: npm install
 
-    - name: Skip tests
-      run: echo "Skipping tests for now"  # Skip tests (if not required)
+      - name: Build the project
+        run: npm run build
 
-    - name: Test SSH connection
-      run: |
-        ssh -o StrictHostKeyChecking=no user@sub.softypy.com "echo 'Connected'"  # Test SSH connection
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-
-    - name: Deploy to VPS
-      run: |
-        ssh -o StrictHostKeyChecking=no user@sub.softypy.com "cd /home/user/myapp && git pull && npm install && pm2 restart all"
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          port: 22
+          script: |
+            cd /var/www/https://github.com/Ibrahim-Sikder/techzon2.git
+            git pull origin main
+            npm install
+            npm run build
+            pm2 restart techzon2
