@@ -1,50 +1,81 @@
-name: Deploy to Hostinger
+name: Deploy Live Chat Frontend with NGINX and SSL
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Deploy to VPS using SSH
+        uses: appleboy/ssh-action@master
         with:
-          node-version: 'lts/*'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build the project
-        run: npm run build
-
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          password: ${{ secrets.VPS_PASSWORD }}
-          port: 22
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
           script: |
-            cd /var/www/techzon2 || exit 1
-            git pull origin main || exit 1
-            npm install || exit 1
-            npm run build || exit 1
+            set -e
 
+            # Variables
+            PROJECT_DIR="/var/www/techzon2"
+            NGINX_CONF="/etc/nginx/sites-available/chatapp.muissa.com.conf"
+            PROJECT_NGINX_CONF="$PROJECT_DIR/nginx.conf"
+            GIT_URL="https://github.com/Ibrahim-Sikder/techzon2.git"
+            DOMAIN_NAME="chatapp.muissa.com"
 
-            pm2 list || exit 1
+            # Navigate to project directory
+            if [ ! -d "$PROJECT_DIR" ]; then
+              sudo mkdir -p $PROJECT_DIR
+              sudo chown -R $USER:$USER $PROJECT_DIR
+            fi
+            cd $PROJECT_DIR
 
-            pm2 restart techzon2 || pm2 start npm --name "techzon2" -- start || exit 1
+            # Clone the repository if not exists
+            if [ ! -d ".git" ]; then
+              git clone $GIT_URL .
+            fi
 
-            sleep 10
-            pm2 logs techzon2 --lines 20 || exit 1
+            # Fetch latest changes and reset to main branch
+            git fetch --all
+            git reset --hard origin/main
 
-            curl -f http://localhost:3000 || exit 1  
+            # Setup environment and dependencies
+            if [ ! -f ".env" ]; then
+              cp .env.example .env
+            fi
 
-            echo "Deployment successful!"
+            npm install --legacy-peer-deps
+            npm run build
+
+            # Deploy NGINX Configuration Conditionally
+            if ! diff -q "$PROJECT_NGINX_CONF" "$NGINX_CONF" > /dev/null; then
+              echo "NGINX configuration has changed. Updating..."
+              sudo cp "$PROJECT_NGINX_CONF" "$NGINX_CONF"
+
+              # Ensure symbolic link exists in sites-enabled
+              if [ ! -f "/etc/nginx/sites-enabled/chatapp.muissa.com.conf" ]; then
+                sudo ln -sf "$NGINX_CONF" /etc/nginx/sites-enabled/chatapp.muissa.com.conf
+              fi
+
+              # Test and reload NGINX
+              sudo nginx -t && sudo systemctl reload nginx
+            else
+              echo "NGINX configuration is unchanged. Skipping update."
+            fi
+
+            # Manage SSL using Certbot for your domain
+            sudo certbot --nginx -d $DOMAIN_NAME --non-interactive --agree-tos --register-unsafely-without-email
+
+            # Manage PM2 process
+            if pm2 list | grep -q "techzon2"; then
+              echo "PM2 process already exists. Restarting..."
+              pm2 restart techzon2
+            else
+              echo "No PM2 process found. Starting..."
+              pm2 start npm --name "techzon2" -- start
+            fi
+
+            # Save PM2 process list
+            pm2 save
