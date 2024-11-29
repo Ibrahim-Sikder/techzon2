@@ -15,10 +15,16 @@ jobs:
       # Step 2: Set up SSH for GitHub Actions
       - name: Set up SSH
         run: |
+          # Create the .ssh directory
           mkdir -p ~/.ssh
+          # Add the private key from secrets
           echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          # Add the host to the known hosts
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+          # Check if the SSH key and known_hosts are correctly set
+          ls -la ~/.ssh
+          cat ~/.ssh/known_hosts
 
       # Step 3: Test SSH connection
       - name: Test SSH connection
