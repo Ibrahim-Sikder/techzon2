@@ -1,4 +1,4 @@
-name: Deploy Live Chat Frontend with NGINX and SSL
+name: Deploy Live Chat Frontend with NGINX
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Set up SSH connection to the server using the secrets
+      # Deploy to VPS using SSH
       - name: Deploy to VPS using SSH
         uses: appleboy/ssh-action@master
         with:
