@@ -60,9 +60,6 @@ jobs:
               echo "NGINX config is unchanged."
             fi
 
-            # Manage SSL using Certbot
-            sudo certbot --nginx -d $DOMAIN_NAME --non-interactive --agree-tos --register-unsafely-without-email
-
             # Manage PM2 process
             if pm2 list | grep -q "techzon2"; then
               echo "PM2 process already exists. Restarting..."
