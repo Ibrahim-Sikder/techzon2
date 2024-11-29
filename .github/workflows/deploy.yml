@@ -2,12 +2,18 @@ name: Deploy Live Chat Frontend with NGINX and SSL
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Set up SSH connection to the server using the secrets
       - name: Deploy to VPS using SSH
         uses: appleboy/ssh-action@master
         with:
@@ -20,7 +26,7 @@ jobs:
 
             echo "Starting deployment..."
 
-            # Variables
+            # Define the project directory and other variables
             PROJECT_DIR="/var/www/techzon2"
             NGINX_CONF="/etc/nginx/sites-available/chatapp.muissa.com.conf"
             PROJECT_NGINX_CONF="$PROJECT_DIR/nginx.conf"
@@ -42,7 +48,7 @@ jobs:
               git clone $GIT_URL .
             fi
 
-            # Fetch and reset the repository
+            # Fetch and reset the repository to the latest main branch
             git fetch --all
             git reset --hard origin/main
 
