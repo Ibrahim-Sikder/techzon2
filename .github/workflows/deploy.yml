@@ -1,4 +1,4 @@
-name: Deploy Live Chat Frontend with NGINX
+name: Deploy Live Chat Frontend
 
 on:
   push:
@@ -10,26 +10,21 @@ jobs:
     steps:
       # Step 1: Checkout the repository
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Step 2: Set up SSH for GitHub Actions
       - name: Set up SSH
         run: |
-          # Create the .ssh directory
           mkdir -p ~/.ssh
-          # Add the private key from secrets
-          echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          # Add the host to the known hosts
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
-          # Check if the SSH key and known_hosts are correctly set
-          ls -la ~/.ssh
-          cat ~/.ssh/known_hosts
+          ssh-keyscan -t rsa ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
       # Step 3: Test SSH connection
       - name: Test SSH connection
         run: |
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -p ${{ secrets.PORT }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} "echo 'SSH connection successful'"
+          ssh -vvv -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -p ${{ secrets.PORT }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} "echo 'SSH connection successful'"
 
       # Step 4: Deploy to VPS using SSH
       - name: Deploy to VPS using SSH
@@ -39,60 +34,49 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
-          timeout: 60 # Increase timeout to 60 seconds
+          timeout: 60s
           script: |
             set -e
-
             echo "Starting deployment..."
-
+            
             # Variables
             PROJECT_DIR="/var/www/techzon2"
             NGINX_CONF="/etc/nginx/sites-available/chatapp.muissa.com.conf"
             PROJECT_NGINX_CONF="$PROJECT_DIR/nginx.conf"
             GIT_URL="https://github.com/Ibrahim-Sikder/techzon2.git"
             DOMAIN_NAME="chatapp.muissa.com"
-
-            # Check if project directory exists, if not, create it
-            if [ ! -d "$PROJECT_DIR" ]; then
-              echo "Creating project directory..."
-              sudo mkdir -p $PROJECT_DIR
-              sudo chown -R $USER:$USER $PROJECT_DIR
-            fi
-
+            
+            # Ensure project directory exists
+            sudo mkdir -p $PROJECT_DIR
+            sudo chown -R $USER:$USER $PROJECT_DIR
+            
             cd $PROJECT_DIR
-
-            # Clone repository if not exists
+            
+            # Clone or update repository
             if [ ! -d ".git" ]; then
-              echo "Cloning repository..."
               git clone $GIT_URL .
+            else
+              git fetch --all
+              git reset --hard origin/main
             fi
-
-            # Fetch and reset the repository
-            git fetch --all
-            git reset --hard origin/main
-
-            # Install dependencies
+            
+            # Install dependencies and build
             npm install --legacy-peer-deps
             npm run build
-
-            # Update NGINX configuration if it has changed
-            if ! diff -q "$PROJECT_NGINX_CONF" "$NGINX_CONF" > /dev/null; then
-              echo "NGINX config changed. Updating..."
+            
+            # Update NGINX configuration
+            if [ -f "$PROJECT_NGINX_CONF" ]; then
               sudo cp "$PROJECT_NGINX_CONF" "$NGINX_CONF"
-              sudo ln -sf "$NGINX_CONF" /etc/nginx/sites-enabled/chatapp.muissa.com.conf
+              sudo ln -sf "$NGINX_CONF" /etc/nginx/sites-enabled/
               sudo nginx -t && sudo systemctl reload nginx
-            else
-              echo "NGINX config is unchanged."
             fi
-
+            
             # Manage PM2 process
             if pm2 list | grep -q "techzon2"; then
-              echo "PM2 process already exists. Restarting..."
               pm2 restart techzon2
             else
-              echo "Starting PM2 process..."
               pm2 start npm --name "techzon2" -- start
             fi
-
+            
             pm2 save
             echo "Deployment completed successfully!"
