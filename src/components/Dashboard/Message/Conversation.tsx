@@ -1,125 +1,109 @@
-// import React, { useState, useEffect } from 'react';
-// import { HiDotsVertical, HiOutlineEmojiSad, HiOutlinePhone, HiOutlinePhotograph, HiOutlineVideoCamera } from 'react-icons/hi';
-// import { IoMdLink } from 'react-icons/io';
-// import { LuSendHorizonal } from 'react-icons/lu';
-// import Image from 'next/image';
-// import chat from '../../../assets/chat/avatar.jpg';
-// import UserConversation from './UserConversation';
-// import { getCookie, setCookie } from '@/helpers/axios/Cookies'; // Ensure setCookie is imported
-// import { decodedToken } from '@/utils/decodedToken';
-// import { useSendMessagesMutation } from '@/redux/api/messageApi';
-// import { TUser } from './AllMessageList';
-// import { useSocket } from '@/hooks/useSocket';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSocket } from '@/hooks/useSocket';
+import { useSendMessagesMutation, useGetAllMessagesQuery } from '@/redux/api/messageApi';
+import { getCookie } from '@/helpers/axios/Cookies';
+import { decodedToken } from '@/utils/decodedToken';
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en.json';
+import './Message.css'
+TimeAgo.addDefaultLocale(en);
+const timeAgo = new TimeAgo('en-US');
 
+export type TMessage = {
+  createdAt: string;
+  message: string;
+  _id: string;
+  senderId: string;
+  receiverId: string;
+};
 
-// const ENDPOINT = "http://localhost:5000";
-// var socket, selectedChatCompare;
-// interface CustomJwtPayload {
-//   id: string;
-// }
+const Conversation = ({ user }: { user: { _id: string; name: string; image: string } }) => {
+  const { socket } = useSocket();
+  const [messages, setMessages] = useState<TMessage[]>([]);
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
-// interface ConversationProps {
-//   user: TUser;
-// }
+  const token = getCookie('token');
+  const decoded = token ? decodedToken(token) : null;
+  const senderId = decoded?.id;
 
-// const Conversation = ({ user }: ConversationProps) => {
-// const [sendMessages] = useSendMessagesMutation();
-//   const [message, setMessage] = useState('');
-//   const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef<null | HTMLDivElement>(null);
+  const { data, isLoading } = useGetAllMessagesQuery({ senderId, chatUserId: user._id });
 
-//   const token = getCookie('token');
-//   const decoded = token ? (decodedToken(token) as CustomJwtPayload) : null;
-//   const senderId = decoded?.id;
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
-//   const { socket } = useSocket();
+  // Initialize messages
+  useEffect(() => {
+    if (data?.data) {
+      setMessages(data.data);
+    }
+  }, [data]);
 
-//   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-//     e.preventDefault();
-//     setLoading(true);
+  // Listen for real-time messages
+  useEffect(() => {
+    socket?.on('message received', (newMessage: TMessage) => {
+      if (newMessage.senderId === user._id || newMessage.receiverId === user._id) {
+        setMessages((prev) => [...prev, newMessage]);
+      }
+    });
 
-//     try {
-//       if (!message.trim()) {
-//         console.log('Message cannot be empty');
-//         setLoading(false);
-//         return;
-//       }
+    return () => {
+      socket?.off('message received');
+    };
+  }, [socket, user._id]);
 
-//       await sendMessages({ id: user._id, body: { message } }).unwrap();
+  const handleSendMessage = async () => {
+    if (!message.trim()) return;
 
-//       socket?.emit('new message', {
-//         senderId,
-//         receiverId: user._id,
-//         message,
-//         createdAt: new Date().toISOString(),
-//       });
+    setLoading(true);
+    try {
+      const newMessage = {
+        senderId,
+        receiverId: user._id,
+        message,
+        createdAt: new Date().toISOString(),
+      };
 
+      socket?.emit('new message', newMessage);
+      setMessages((prev) => [...prev, newMessage]);
+      setMessage('');
+    } catch (error) {
+      console.error('Error sending message:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-//       setMessage('');
-//     } catch (error) {
-//       console.error('Error sending message:', error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-//   return (
-//     <>
-//       <div className="flex flex-wrap gap-5 items-center justify-between p-8">
-//         <div className="flex items-center">
-//           <div className="relative">
-//             <Image className="w-10 lg:w-20" src={chat} alt="chat" />
-//             <div className="activeUser absolute w-3 h-3 bg-green-500 rounded-full md:bottom-6 bottom-0 left-5 md:left-16"></div>
-//           </div>
-//           <div className="ml-3">
-//             <h3 className="text-sm md:text-xl font-semibold">{user.name}</h3>
-//             <span className="text-[#0EC144] text-sm">Online</span>
-//           </div>
-//         </div>
+  // Scroll when messages update
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
-//         <div className="flex items-center space-x-3">
-//           <HiOutlineVideoCamera size={25} />
-//           <HiOutlinePhone size={25} />
-//           <HiDotsVertical size={25} />
-//         </div>
-//       </div>
-//       <hr className="border " />
-//       <div className="chatWraps">
-//         <UserConversation user={user} />
-//       </div>
-//       <form onSubmit={handleSubmit}>
-//         <div className="chatting">
-//           <div className="flex flex-wrap gap-3 items-center justify-between">
-//             <div className="flex items-center space-x-2">
-//               <HiOutlineEmojiSad className="md:size-8" />
-//               <IoMdLink className="md:size-8" />
-//               <HiOutlinePhotograph className="md:size-8" />
-//             </div>
-//             <div className="flex items-center">
-//               <input
-//                 type="text"
-//                 placeholder="Typing here......"
-//                 className="chatInput"
-//                 value={message}
-//                 onChange={(e) => setMessage(e.target.value)}
-//               />
-//               <button type="submit" className="chatBtn" disabled={loading}>
-//                 {loading ? 'Sending...' : <LuSendHorizonal className="md:size-8" />}
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </form>
-//     </>
-//   );
-// };
-
-// export default Conversation;
-
-import React from 'react';
-
-const Conversation = () => {
   return (
-    <div>
-      <h4>user</h4>
+    <div className="conversation">
+      <div className="messages">
+        {messages.map((msg, idx) => (
+          <div key={idx} className={`message ${msg.senderId === senderId ? 'sent' : 'received'}`}>
+            <p>{msg.message}</p>
+            <span>{timeAgo.format(new Date(msg.createdAt))}</span>
+          </div>
+        ))}
+        <div ref={messagesEndRef} />
+      </div>
+
+      <div className="messageInput">
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Type a message..."
+        />
+        <button onClick={handleSendMessage} disabled={loading}>
+          {loading ? 'Sending...' : 'Send'}
+        </button>
+      </div>
     </div>
   );
 };

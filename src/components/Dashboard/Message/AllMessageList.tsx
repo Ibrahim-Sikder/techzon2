@@ -1,5 +1,5 @@
 import { useGetAllUsersQuery } from "@/redux/api/userApi";
-import user from "../../../assets/chat/chat.jpg";
+
 import profile from '../../../assets/icon/profile.png';
 import Image from "next/image";
 
@@ -10,7 +10,7 @@ export type TUser = {
 };
 
 interface AllMessageListProps {
-  search: string; // Explicitly type 'search' as a string
+  search: string; 
 }
 
 const AllMessageList: React.FC<AllMessageListProps> = ({ search }) => {

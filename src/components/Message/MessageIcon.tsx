@@ -1,58 +1,59 @@
-// "use client";
-// import React, { useState, useEffect } from "react";
-// import { FaRegComment } from "react-icons/fa";
-// import { VscClose } from "react-icons/vsc";
-// import MessageModal from "./MessageModal";
-// import { getCookie } from "@/helpers/Cookies";
-// import { useRouter } from "next/navigation";
+"use client";
+import React, { useState, useEffect } from "react";
+import { FaRegComment } from "react-icons/fa";
+import { VscClose } from "react-icons/vsc";
+import MessageModal from "./MessageModal";
 
-// const MessageIcon = () => {
-//   const [open, setOpen] = useState(false);
-//   const [isClient, setIsClient] = useState(false);
-//   const router = useRouter();
-//   const token = getCookie("mui-token");
+import { useRouter } from "next/navigation";
+import { getCookie } from "@/helpers/axios/Cookies";
 
-//   useEffect(() => {
-//     setIsClient(true);
-//     if (!token) {
-//       router.push('/login');
-//     }
-//   }, [token, router]);
+const MessageIcon = () => {
+  const [open, setOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
+  const token = getCookie("mui-token");
 
-//   const handleOpen = () => {
-//     if (token) {
-//       setOpen(true);
-//     } else {
-//       router.push('/login');
-//     }
-//   };
+  useEffect(() => {
+    setIsClient(true);
+    if (!token) {
+      router.push('/login');
+    }
+  }, [token, router]);
 
-//   const handleClose = () => setOpen(false);
+  const handleOpen = () => {
+    if (token) {
+      setOpen(true);
+    } else {
+      router.push('/login');
+    }
+  };
 
-//   if (!isClient) {
-//     return null;
-//   }
+  const handleClose = () => setOpen(false);
 
-//   return (
-//     <div>
-//       <div className="message rounded-full p-2 z-[9999999999999] fixed bg-[#1591A3] text-white bottom-5 right-1 cursor-pointer transition-all duration-75 shadowStyle">
-//         {open ? (
-//           <VscClose
-//             className="transition ease-in-out delay-75"
-//             onClick={handleClose}
-//             size={45}
-//           />
-//         ) : (
-//           <FaRegComment
-//             onClick={handleOpen}
-//             size={35}
-//             className="transition ease-in-out delay-75"
-//           />
-//         )}
-//       </div>
-//       {open && <MessageModal close={handleClose} />}
-//     </div>
-//   );
-// };
+  if (!isClient) {
+    return null;
+  }
 
-// export default MessageIcon;
+  return (
+    <div>
+      <div className="message rounded-full p-2 z-[9999999999999] fixed bg-[#1591A3] text-white bottom-5 right-1 cursor-pointer transition-all duration-75 shadowStyle">
+        {open ? (
+          <VscClose
+            className="transition ease-in-out delay-75"
+            onClick={handleClose}
+            size={45}
+          />
+        ) : (
+          <FaRegComment
+            onClick={handleOpen}
+            size={35}
+            className="transition ease-in-out delay-75"
+          />
+        )}
+      </div>
+      {open && <MessageModal close={handleClose} />}
+    </div>
+  );
+};
+
+export default MessageIcon;

@@ -231,3 +231,81 @@
 }
 }
 
+.messageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.messageWrapper {
+  display: flex;
+  align-items: flex-end;
+}
+
+.sentMessage {
+  justify-content: flex-end;
+}
+
+.receivedMessage {
+  justify-content: flex-start;
+}
+
+.message {
+  max-width: 70%;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.messageContent {
+  background-color: #e6f7ff;
+  padding: 10px 15px;
+  border-radius: 15px;
+  word-wrap: break-word;
+  font-size: 14px;
+  position: relative;
+}
+
+.sent .messageContent {
+  background-color: #dcf8c6;
+  border-top-right-radius: 0;
+}
+
+.received .messageContent {
+  background-color: #ffffff;
+  border-top-left-radius: 0;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
+}
+
+.profileImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.timestamp {
+  font-size: 10px;
+  color: #999;
+  margin-top: 5px;
+  align-self: flex-end;
+}
+
+.sent .timestamp {
+  text-align: right;
+}
+
+.received .timestamp {
+  text-align: left;
+}
+.messages {
+    /* background: red; */
+    height: 800px;
+    overflow-y: scroll;
+    padding: 30px;
+    display: grid
+;
+}
