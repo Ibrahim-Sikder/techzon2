@@ -302,10 +302,8 @@
   text-align: left;
 }
 .messages {
-    /* background: red; */
-    height: 800px;
-    overflow-y: scroll;
-    padding: 30px;
-    display: grid
-;
+  background: red;
+  height: 800px;
+  color: white;
+  overflow-y: scroll;
 }
